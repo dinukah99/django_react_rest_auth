@@ -11,7 +11,7 @@ class RegisterUserView(GenericAPIView):
     def post(self, request):
         user_data = request.data
         serializer = self.serializer_class(data=user_data)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
             user = serializer.data
             # send email function user['email']
