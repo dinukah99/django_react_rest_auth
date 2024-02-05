@@ -135,3 +135,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3030',
 ]
+
+EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+EMAIL_HOST_USER = '09e53970250446'
+EMAIL_HOST_PASSWORD = 'b3a2e418a343ac'
+DEFAULT_FROM_EMAIL = 'dinukahamarasinghe@gmail.com'
+EMAIL_PORT = '2525'
+EMAIL_USE_TLS = True
