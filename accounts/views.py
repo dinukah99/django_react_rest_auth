@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
+from .models import OneTimePassword
 from .serializers import UserRegisterSerializer
 from rest_framework.response import Response
 from .utils import sendOtp
@@ -25,3 +26,24 @@ class RegisterUserView(GenericAPIView):
                            f'verify your email to complete the registration.'
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class VerifyUserEmail(GenericAPIView):
+    def post(self, request):
+        otp_code = request.data.get('otp')
+        try:
+            user_code_obj = OneTimePassword.objects.get(code=otp_code)
+            user = user_code_obj.user
+            if not user.is_verified:
+                user.is_verified = True
+                user.save()
+                return Response({
+                    'message': 'Email verified successfully'
+                }, status=status.HTTP_200_OK)
+            return Response({
+                'message': 'Email already verified'
+            }, status=status.HTTP_204_NO_CONTENT)
+        except OneTimePassword.DoesNotExist:
+            return Response({
+                'message': 'Invalid OTP'
+            }, status=status.HTTP_404_NOT_FOUND)
