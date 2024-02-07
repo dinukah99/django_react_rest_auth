@@ -155,3 +155,7 @@ EMAIL_HOST_PASSWORD = 'b3a2e418a343ac'
 DEFAULT_FROM_EMAIL = 'dinukahamarasinghe@gmail.com'
 EMAIL_PORT = '2525'
 EMAIL_USE_TLS = True
+
+GOOGLE_CLIENT_ID = "266127850805-ae29j50o0l2f6ubf8s9k162g63l9ltgm.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = "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"
+SOCIAL_AUTH_PASSWORD = "sdsdasdca1ds5dsdas"
