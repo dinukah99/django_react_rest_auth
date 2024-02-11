@@ -35,7 +35,6 @@ const SignUp = () => {
                 navigate('/otp/verify')
                 toast.success(response.message)
             }
-
             // server error pass to error
         }
     }
