@@ -6,6 +6,7 @@ import VerifyEmail from "./components/VerifyEmail.jsx";
 import Login from "./components/Login.jsx";
 import Profile from "./components/Profile.jsx";
 import ForgetPassword from "./components/ForgetPassword.jsx";
+import ResetPassword from "./components/ResetPassword.jsx";
 import './App.css'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/otp/verify" element={<VerifyEmail/>}/>
                     <Route path="/forget_password" element={<ForgetPassword/>}/>
+                    <Route path="/password-reset-confirm/:uid/:token" element={<ResetPassword/>}/>
                 </Routes>
             </Router>
         </>
