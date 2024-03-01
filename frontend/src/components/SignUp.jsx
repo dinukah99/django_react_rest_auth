@@ -1,23 +1,23 @@
 import {useEffect, useState} from 'react'
 import axios from "axios"
 import {toast} from "react-toastify";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import axiosInstance from "../utils/axiosInstance.js";
 
 const Signup = () => {
     const navigate = useNavigate()
-    const [formdata, setFormdata] = useState({
+    const [searchParams] = useSearchParams()
+    const [formData, setFormData] = useState({
         email: "",
         first_name: "",
         last_name: "",
         password: "",
         password2: ""
     })
-    const [error, setError] = useState('')
 
     const handleOnchange = (e) => {
-        setFormdata({...formdata, [e.target.name]: e.target.value})
+        setFormData({...formData, [e.target.name]: e.target.value})
     }
-
 
     const handleSigninWithGoogle = async (response) => {
         console.log(response)
@@ -65,20 +65,53 @@ const Signup = () => {
     }, []);
 
 
-    const {email, first_name, last_name, password, password2} = formdata
+    const {email, first_name, last_name, password, password2} = formData
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const response = await axios.post('http://localhost:8000/api/v1/auth/register/', formdata)
+        const response = await axios.post('http://localhost:8000/api/v1/auth/register/', formData)
         console.log(response.data)
         const result = response.data
         if (response.status === 201) {
             navigate("/otp/verify")
             toast.success(result.message)
         }
-
-
     }
+
+    const handleSignInWithGithub = () => {
+        window.location.assign(`https://github.com/login/oauth/authorize/?client_id=${import.meta.env.VITE_GITHUB_ID}`)
+    }
+
+
+    const send_code_to_backend = async () => {
+        if (searchParams) {
+            try {
+                const qcode = searchParams.get('code')
+                const response = await axiosInstance.post('/auth/github/', {'code': qcode})
+                const result = response.data
+                if (response.status === 200) {
+                    const user = {
+                        'email': result.email,
+                        'names': result.full_name
+                    }
+                    localStorage.setItem('access', JSON.stringify(result.access_token))
+                    localStorage.setItem('refresh', JSON.stringify(result.refresh_token))
+                    localStorage.setItem('user', JSON.stringify(user))
+                    navigate('/profile')
+                    toast.success("Login Successful!")
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+
+    let code = searchParams.get('code')
+    useEffect(() => {
+        if (code) {
+            send_code_to_backend()
+        }
+    }, [code])
 
     return (
         <div>
@@ -134,7 +167,7 @@ const Signup = () => {
                         <div id="signInDiv" className='gsignIn'></div>
                     </div>
                     <div className='githubContainer'>
-                        <button>Sign up with Github</button>
+                        <button onClick={handleSignInWithGithub}>Sign up with Github</button>
                     </div>
                 </div>
             </div>

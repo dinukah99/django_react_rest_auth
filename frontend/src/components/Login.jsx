@@ -30,7 +30,7 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(user))
             localStorage.setItem('access', JSON.stringify(server_res.data.access_token))
             localStorage.setItem('refresh', JSON.stringify(server_res.data.refresh_token))
-            navigate('/profile')
+            window.location.href = '/profile';
             toast.success("Login Successful..")
         }
     }

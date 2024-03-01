@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import GoogleSignInView, GithubSignInView
+from .views import GoogleSignInView, GithubOauthSignInView
 
 urlpatterns = [
     path('google/', GoogleSignInView.as_view(), name='google'),
-    path('github/', GithubSignInView.as_view(), name='github')
+    path('github/', GithubOauthSignInView.as_view(), name='github')
 ]
